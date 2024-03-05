@@ -1,7 +1,7 @@
 all: install
 
 tpm:
-	git clone https://github.com/tmux-plugins/tpm .config/tmux/plugins/tpm || true
+	git clone https://github.com/tmux-plugins/tpm ~/.config/tmux/plugins/tpm || true
 
 nvchad:
 	git clone https://github.com/NvChad/NvChad ~/.config/nvim --depth 1 || true
