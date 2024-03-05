@@ -1,7 +1,6 @@
 [user]
-	name = Nic van Dessel
-	email = 51134175+nvandessel@users.noreply.github.com
-	signingkey = 88AE94AD8B681486
+	name = Tobias Perelstein
+	email = 5562156+tobocop2@users.noreply.github.com
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
@@ -20,9 +19,13 @@
     replace = "!branch=$(git branch-name) && git branch -D ($branch | sed -e 's/-temp$') && git checkout -b ($branch | sed -e 's/-temp$') && git branch -D $branch"
     force-update = "!branch=$(git branch-name) && git push -f origin $branch"
     squash = "!git update && git temp && git merge-squash && git replace && git force-update"
-[commit]
-	gpgsign = true
-[gpg]
-	program = gpg
+[push]
+	default = simple
 [core]
 	editor = nvim
+[difftool]
+   difftool = nvim
+[url "git@github.com:"]
+	insteadOf = https://github.com/
+[merge]
+	tool = vimdiff

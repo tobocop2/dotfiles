@@ -2,12 +2,11 @@
 local M = {}
 
 M.ui = {
-    theme = 'catppuccin',
+    theme = 'tomorrow_night',
     telescope = {
         style = "bordered",
     },
 }
 M.plugins = 'custom.plugins'
-M.mappings = require("custom.mappings")
 
 return M
