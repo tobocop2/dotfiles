@@ -1,11 +1,6 @@
 [user]
 	name = Tobias Perelstein
 	email = 5562156+tobocop2@users.noreply.github.com
-[filter "lfs"]
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
-	required = true
 [alias]
     s = status -s
     lg = log --oneline --decorate --all --graph
@@ -24,8 +19,14 @@
 [core]
 	editor = nvim
 [difftool]
-   difftool = nvim
+   difftool = vimdiff
+
+[difftool "vimdiff"]
+	path = nvim
+
 [url "git@github.com:"]
 	insteadOf = https://github.com/
 [merge]
 	tool = vimdiff
+[mergetool "vimdiff"]
+	path = nvim

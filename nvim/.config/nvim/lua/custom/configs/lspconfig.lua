@@ -34,4 +34,3 @@ for _, lsp in ipairs(servers) do
         single_file_support = true,
     })
 end
-
