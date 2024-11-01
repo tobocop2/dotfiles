@@ -107,7 +107,7 @@ vim.keymap.set("n", "<C-w>l", ":vertical:resize +15<CR>")
 
 
 -- Close the current buffer
-vim.keymap.set("n", "<leader>bd", ":Bclose<cr>")
+vim.keymap.set("n", "<leader>bd", ":bdelete<cr>")
 
 -- Close all the buffers
 vim.keymap.set("n", "<leader>ba", ":bufdo bd<cr>")

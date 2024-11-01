@@ -224,13 +224,13 @@ json-to-ini() {
   echo "INI file created at $ini_file"
 }
 
-# jwt() {
-#   ssh-keygen -t rsa -b 4096 -m PEM -f jwtRS256.key
-#   # Don't add passphrase
-#   openssl rsa -in jwtRS256.key -pubout -outform PEM -out jwtRS256.key.pub
-#   cat jwtRS256.key
-#   cat jwtRS256.key.pub
-# }
+jwt() {
+  ssh-keygen -t rsa -b 4096 -m PEM -f jwtRS256.key
+  # Don't add passphrase
+  openssl rsa -in jwtRS256.key -pubout -outform PEM -out jwtRS256.key.pub
+  cat jwtRS256.key
+  cat jwtRS256.key.pub
+}
 
 # act () { docker run -it --rm --platform=linux/amd64 -v "$PWD:/workspace" -v /var/run/docker.sock:/var/run/docker.sock -w /workspace act-image "$@" }
 
