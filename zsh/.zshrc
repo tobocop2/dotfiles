@@ -224,7 +224,7 @@ json-to-ini() {
   echo "INI file created at $ini_file"
 }
 
-jwt() {
+jwt-make-token() {
   ssh-keygen -t rsa -b 4096 -m PEM -f jwtRS256.key
   # Don't add passphrase
   openssl rsa -in jwtRS256.key -pubout -outform PEM -out jwtRS256.key.pub
@@ -232,7 +232,54 @@ jwt() {
   cat jwtRS256.key.pub
 }
 
-# act () { docker run -it --rm --platform=linux/amd64 -v "$PWD:/workspace" -v /var/run/docker.sock:/var/run/docker.sock -w /workspace act-image "$@" }
+opencode-ollama() {
+  local outfile="${1:-opencode.json}"
+  local baseurl="${2:-http://localhost:11434/v1}"
+
+  if ! command -v ollama >/dev/null; then
+    echo "❌ Ollama not found in PATH" >&2
+    return 1
+  fi
+  if ! command -v jq >/dev/null; then
+    echo "❌ jq is required (install via 'brew install jq' or your package manager)" >&2
+    return 1
+  fi
+
+  # Read model names from ollama list (skip header)
+  local models
+  models=$(ollama list 2>/dev/null | awk 'NR>1 {print $1}' | grep -v '^$')
+
+  if [ -z "$models" ]; then
+    echo "⚠️ No models found from 'ollama list'"
+    return 1
+  fi
+
+  # Build models JSON dynamically
+  local models_json
+  models_json=$(printf '%s\n' "$models" | jq -Rn '
+    [inputs | select(length>0)] | 
+    map({ (.): { "name": . } }) | add
+  ')
+
+  # Write final config
+  jq -n \
+    --arg baseURL "$baseurl" \
+    --argjson models "$models_json" \
+    '{
+      "$schema": "https://opencode.ai/config.json",
+      "provider": {
+        "ollama": {
+          "npm": "@ai-sdk/openai-compatible",
+          "name": "Ollama (local)",
+          "options": { "baseURL": $baseURL },
+          "models": $models
+        }
+      }
+    }' > "$outfile"
+
+  echo "✅ Wrote $outfile with $(echo "$models" | wc -l | xargs) model(s)"
+}
+
 
 alias ssh='TERM=screen-256color ssh'
 alias node='node --experimental-repl-await'
@@ -266,3 +313,4 @@ source /Users/tobias/projects/luminopia-github/developer-tools/db-utils.bash
 export DOCKER_DEFAULT_PLATFORM=linux/amd64
 
 unalias yt
+export PATH="/opt/homebrew/opt/postgresql@16/bin:$PATH"
