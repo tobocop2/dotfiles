@@ -71,11 +71,42 @@ return {
       pcall(require('telescope').load_extension, 'ui-select')
 
       local builtin = require('telescope.builtin')
+      local sorters = require('telescope.sorters')
       local map = vim.keymap.set
 
+      -- Score-bump sorter: same fuzzy file scoring, but adds a penalty to
+      -- paths that look like test files so they sink to the bottom of
+      -- results for the same query. Patterns cover Python (tests/, test_*.py),
+      -- Go (*_test.go), JS/TS (*.test.ts, *.spec.ts), Rust (#[cfg(test)] is
+      -- inline only, but tests/ subdir is conventional), and generic /test(s)/.
+      local function test_aware_sorter()
+        local fuzzy = sorters.get_fuzzy_file()
+        return sorters.Sorter:new({
+          scoring_function = function(_, prompt, line)
+            local base = fuzzy.scoring_function(fuzzy, prompt, line)
+            if base == -1 then return -1 end
+            local is_test = line:match('^tests?/')
+              or line:match('/tests?/')
+              or line:match('/test_[^/]+$')
+              or line:match('/[^/]+_test%.[^/]+$')
+              or line:match('%.test%.[^/]+$')
+              or line:match('%.spec%.[^/]+$')
+            if is_test then return base + 1.0 end
+            return base
+          end,
+          highlighter = function(_, prompt, display)
+            return fuzzy.highlighter(fuzzy, prompt, display)
+          end,
+        })
+      end
+
       -- Find prefix (the muscle-memory ones from NvChad)
-      map('n', '<leader>ff', builtin.find_files, { desc = 'find files' })
-      map('n', '<leader>fa', function() builtin.find_files({ hidden = true, no_ignore = true }) end, { desc = 'find files (incl. hidden / ignored)' })
+      map('n', '<leader>ff', function()
+        builtin.find_files({ sorter = test_aware_sorter() })
+      end, { desc = 'find files (tests deprioritized)' })
+      map('n', '<leader>fa', function()
+        builtin.find_files({ hidden = true, no_ignore = true, sorter = test_aware_sorter() })
+      end, { desc = 'find files (incl. hidden / ignored)' })
       map('n', '<leader>fw', builtin.live_grep,  { desc = 'find word (live grep)' })
       map('n', '<leader>fb', builtin.buffers,    { desc = 'find buffers' })
       map('n', '<leader>fo', builtin.oldfiles,   { desc = 'find old files' })
