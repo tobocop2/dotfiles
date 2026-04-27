@@ -1,9 +1,9 @@
 -- CodeCompanion: chat + inline AI inside the buffer, talking to Claude.
 --
--- API key resolution order: pass first, fall back to macOS Keychain.
+-- API key resolution order: macOS Keychain first, fall back to pass.
 -- Store the key once via either:
+--   security add-generic-password -a "$USER" -s anthropic_api_key -U -w "<key>"
 --   pass insert anthropic/api_key
---   security add-generic-password -a "$USER" -s anthropic_api_key -w "<key>"
 -- No plaintext key in shell rc files.
 
 return {
@@ -24,7 +24,7 @@ return {
         anthropic = function()
           return require('codecompanion.adapters').extend('anthropic', {
             env = {
-              api_key = "cmd:sh -c 'pass anthropic/api_key 2>/dev/null || security find-generic-password -ws anthropic_api_key'",
+              api_key = "cmd:sh -c 'security find-generic-password -ws anthropic_api_key 2>/dev/null || pass anthropic/api_key'",
             },
             schema = {
               model = { default = 'claude-sonnet-4-6' },
