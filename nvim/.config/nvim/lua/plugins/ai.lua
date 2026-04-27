@@ -24,7 +24,7 @@ return {
     keys = {
       { '<leader>aa', '<cmd>CodeCompanionActions<cr>',           mode = { 'n', 'v' }, desc = 'AI: actions' },
       { '<leader>ac', '<cmd>CodeCompanionChat Toggle<cr>',       mode = { 'n', 'v' }, desc = 'AI: chat toggle (Claude)' },
-      { '<leader>ao', '<cmd>CodeCompanionChat ollama<cr>',       mode = { 'n', 'v' }, desc = 'AI: new chat (Ollama)' },
+      { '<leader>ao', '<cmd>CodeCompanionChat adapter=ollama<cr>', mode = { 'n', 'v' }, desc = 'AI: new chat (Ollama)' },
       { '<leader>ae', '<cmd>CodeCompanionChat Add<cr>',          mode = 'v',          desc = 'AI: send selection to chat' },
       { '<leader>am', '<cmd>CodeCompanion /buffer<cr>',          mode = { 'n', 'v' }, desc = 'AI: include current buffer' },
     },
