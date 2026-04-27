@@ -20,6 +20,23 @@ return {
             vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
           end
 
+          -- Modern defaults
+          map('gd', vim.lsp.buf.definition,      'goto definition')
+          map('gD', vim.lsp.buf.declaration,     'goto declaration')
+          map('gr', vim.lsp.buf.references,      'references')
+          map('gi', vim.lsp.buf.implementation,  'goto implementation')
+          map('gy', vim.lsp.buf.type_definition, 'goto type definition')
+          map('K',  vim.lsp.buf.hover,           'hover docs')
+          -- Signature help in insert mode only; <C-k> is tmux-up in normal mode
+          map('<C-k>', vim.lsp.buf.signature_help, 'signature help', 'i')
+
+          -- NvChad-style aliases (muscle memory)
+          map('<leader>ca', vim.lsp.buf.code_action, 'code action', { 'n', 'x' })
+          map('<leader>ra', vim.lsp.buf.rename,      'rename symbol')
+          map('<leader>gd', vim.lsp.buf.definition,  'goto definition')
+          map('<leader>gr', vim.lsp.buf.references,  'references')
+
+          -- Kickstart originals (still here so you can pick whichever sticks)
           map('grn', vim.lsp.buf.rename, 'rename')
           map('gra', vim.lsp.buf.code_action, 'code action', { 'n', 'x' })
           map('grD', vim.lsp.buf.declaration, 'goto declaration')

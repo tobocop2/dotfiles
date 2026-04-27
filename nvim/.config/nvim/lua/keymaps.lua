@@ -33,7 +33,14 @@ map('x', '<leader>p', '"_dP', { desc = 'paste keeping yank' })
 map('n', '<leader>n', ':set nonumber! relativenumber!<CR>', { desc = 'toggle line numbers' })
 map('n', '<leader>w', ':set wrap! wrap?<CR>', { desc = 'toggle wrap' })
 
+-- Save and quit (NvChad-style ergonomics)
+map({ 'n', 'i', 'v' }, '<C-s>', '<Esc><cmd>w<CR>', { desc = 'save file' })
+map('n', '<leader>q', '<cmd>close<CR>', { desc = 'close current window' })
+
 -- Buffer management
+map('n', '<Tab>',     ':bnext<CR>',     { desc = 'buffer: next' })
+map('n', '<S-Tab>',   ':bprevious<CR>', { desc = 'buffer: prev' })
+map('n', '<leader>x', ':bdelete<CR>',   { desc = 'buffer: close' })
 map('n', '<leader>bd', ':bdelete<CR>', { desc = 'buffer: delete' })
 map('n', '<leader>ba', ':bufdo bd<CR>', { desc = 'buffer: delete all' })
 map('n', '<leader>bl', ':b#<CR>', { desc = 'buffer: last' })
@@ -73,6 +80,7 @@ map('n', '<C-l>', '<cmd>TmuxNavigateRight<CR>', { desc = 'focus right (nvim or t
 map('n', '<C-t>', ':NvimTreeFocus<CR>',    { desc = 'tree: focus' })
 map('n', '<C-f>', ':NvimTreeFindFile<CR>', { desc = 'tree: reveal current file' })
 map('n', '<C-c>', ':NvimTreeClose<CR>',    { desc = 'tree: close' })
+map('n', '<leader>e', ':NvimTreeFocus<CR>', { desc = 'tree: focus (NvChad alias)' })
 
 -- Diagnostics
 map('n', '[d', vim.diagnostic.goto_prev, { desc = 'prev diagnostic' })

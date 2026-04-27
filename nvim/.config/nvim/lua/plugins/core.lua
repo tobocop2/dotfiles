@@ -29,7 +29,9 @@ return {
       spec = {
         { '<leader>b', group = 'Buffer' },
         { '<leader>a', group = 'AI' },
+        { '<leader>f', group = 'Find' },
         { '<leader>s', group = 'Search', mode = { 'n', 'v' } },
+        { '<leader>c', group = 'Code' },
         { '<leader>d', group = 'Diagnostics' },
         { 'gr', group = 'LSP', mode = { 'n' } },
       },
@@ -70,16 +72,31 @@ return {
 
       local builtin = require('telescope.builtin')
       local map = vim.keymap.set
-      map('n', '<leader>sh', builtin.help_tags,   { desc = 'search help' })
-      map('n', '<leader>sk', builtin.keymaps,     { desc = 'search keymaps' })
-      map('n', '<leader>sf', builtin.find_files,  { desc = 'search files' })
-      map('n', '<leader>ss', builtin.builtin,     { desc = 'search builtins' })
+
+      -- Find prefix (the muscle-memory ones from NvChad)
+      map('n', '<leader>ff', builtin.find_files, { desc = 'find files' })
+      map('n', '<leader>fa', function() builtin.find_files({ hidden = true, no_ignore = true }) end, { desc = 'find files (incl. hidden / ignored)' })
+      map('n', '<leader>fw', builtin.live_grep,  { desc = 'find word (live grep)' })
+      map('n', '<leader>fb', builtin.buffers,    { desc = 'find buffers' })
+      map('n', '<leader>fo', builtin.oldfiles,   { desc = 'find old files' })
+      map('n', '<leader>fh', builtin.help_tags,  { desc = 'find help tags' })
+      map('n', '<leader>fc', builtin.commands,   { desc = 'find commands' })
+      map('n', '<leader>fk', builtin.keymaps,    { desc = 'find keymaps' })
+      map('n', '<leader>fz', function()
+        builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown({
+          winblend = 10, previewer = false,
+        }))
+      end, { desc = 'fuzzy in current buffer' })
+
+      -- Search prefix (kickstart-flavored, kept around)
+      map('n', '<leader>ss', builtin.builtin,     { desc = 'pickers' })
       map({ 'n', 'v' }, '<leader>sw', builtin.grep_string, { desc = 'search current word' })
-      map('n', '<leader>sg', builtin.live_grep,   { desc = 'live grep' })
-      map('n', '<leader>sd', builtin.diagnostics, { desc = 'search diagnostics' })
+      map('n', '<leader>sd', builtin.diagnostics, { desc = 'diagnostics' })
       map('n', '<leader>sr', builtin.resume,      { desc = 'resume last picker' })
-      map('n', '<leader>s.', builtin.oldfiles,    { desc = 'recent files' })
-      map('n', '<leader>sc', builtin.commands,    { desc = 'search commands' })
+      map('n', '<leader>sn', function()
+        builtin.find_files({ cwd = vim.fn.stdpath('config') })
+      end, { desc = 'search nvim config' })
+
       map('n', '<leader><leader>', builtin.buffers, { desc = 'find buffer' })
 
       map('n', '<leader>/', function()
@@ -87,10 +104,6 @@ return {
           winblend = 10, previewer = false,
         }))
       end, { desc = 'fuzzy in current buffer' })
-
-      map('n', '<leader>sn', function()
-        builtin.find_files({ cwd = vim.fn.stdpath('config') })
-      end, { desc = 'search nvim config' })
     end,
   },
 
@@ -100,6 +113,14 @@ return {
     config = function()
       require('mini.ai').setup({ n_lines = 500 })
       require('mini.surround').setup()
+      require('mini.comment').setup({
+        mappings = {
+          comment = '<leader>/',
+          comment_line = '<leader>/',
+          comment_visual = '<leader>/',
+          textobject = '<leader>/',
+        },
+      })
     end,
   },
 
@@ -109,7 +130,8 @@ return {
     event = { 'BufWritePre' },
     cmd = { 'ConformInfo' },
     keys = {
-      { '<leader>f', function() require('conform').format({ async = true, lsp_format = 'fallback' }) end, mode = '', desc = 'format buffer' },
+      { '<leader>cf', function() require('conform').format({ async = true, lsp_format = 'fallback' }) end, mode = '', desc = 'format buffer' },
+      { '<leader>fm', function() require('conform').format({ async = true, lsp_format = 'fallback' }) end, mode = '', desc = 'format buffer (NvChad alias)' },
     },
     opts = {
       notify_on_error = false,
