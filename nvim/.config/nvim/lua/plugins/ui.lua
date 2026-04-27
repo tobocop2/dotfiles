@@ -31,6 +31,31 @@ return {
     },
   },
 
+  -- Buffer tabs at the top.
+  {
+    'akinsho/bufferline.nvim',
+    version = '*',
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    event = 'VimEnter',
+    opts = {
+      options = {
+        mode = 'buffers',
+        diagnostics = 'nvim_lsp',
+        show_buffer_close_icons = true,
+        show_close_icon = false,
+        separator_style = 'thin',
+        offsets = {
+          {
+            filetype = 'NvimTree',
+            text = 'Files',
+            highlight = 'Directory',
+            text_align = 'left',
+          },
+        },
+      },
+    },
+  },
+
   -- File tree
   {
     'nvim-tree/nvim-tree.lua',
