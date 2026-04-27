@@ -99,11 +99,8 @@ return {
 
       map('n', '<leader><leader>', builtin.buffers, { desc = 'find buffer' })
 
-      map('n', '<leader>/', function()
-        builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown({
-          winblend = 10, previewer = false,
-        }))
-      end, { desc = 'fuzzy in current buffer' })
+      -- <leader>/ is mini.comment toggle (NvChad muscle memory).
+      -- Use <leader>fz for fuzzy in current buffer.
     end,
   },
 
