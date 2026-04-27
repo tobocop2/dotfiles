@@ -1,0 +1,41 @@
+-- CodeCompanion: chat + inline AI inside the buffer, talking to Claude.
+--
+-- API key resolution order: pass first, fall back to macOS Keychain.
+-- Store the key once via either:
+--   pass insert anthropic/api_key
+--   security add-generic-password -a "$USER" -s anthropic_api_key -w "<key>"
+-- No plaintext key in shell rc files.
+
+return {
+  {
+    'olimorris/codecompanion.nvim',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'nvim-treesitter/nvim-treesitter',
+    },
+    cmd = { 'CodeCompanion', 'CodeCompanionActions', 'CodeCompanionChat', 'CodeCompanionCmd' },
+    keys = {
+      { '<leader>aa', '<cmd>CodeCompanionActions<cr>',     mode = { 'n', 'v' }, desc = 'AI: actions' },
+      { '<leader>ac', '<cmd>CodeCompanionChat Toggle<cr>', mode = { 'n', 'v' }, desc = 'AI: chat toggle' },
+      { '<leader>ae', '<cmd>CodeCompanionChat Add<cr>',    mode = 'v',          desc = 'AI: send selection to chat' },
+    },
+    opts = {
+      adapters = {
+        anthropic = function()
+          return require('codecompanion.adapters').extend('anthropic', {
+            env = {
+              api_key = "cmd:sh -c 'pass anthropic/api_key 2>/dev/null || security find-generic-password -ws anthropic_api_key'",
+            },
+            schema = {
+              model = { default = 'claude-sonnet-4-6' },
+            },
+          })
+        end,
+      },
+      strategies = {
+        chat = { adapter = 'anthropic' },
+        inline = { adapter = 'anthropic' },
+      },
+    },
+  },
+}
