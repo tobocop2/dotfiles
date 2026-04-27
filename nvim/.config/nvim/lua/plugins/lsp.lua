@@ -77,6 +77,17 @@ return {
         },
         ts_ls = {},
         eslint = {},
+        gopls = {
+          settings = {
+            gopls = {
+              gofumpt = true,
+              staticcheck = true,
+              usePlaceholders = true,
+              analyses = { unusedparams = true, shadow = true },
+              hints = { parameterNames = true, assignVariableTypes = true },
+            },
+          },
+        },
       }
 
       local ensure_installed = vim.tbl_keys(servers or {})
@@ -84,6 +95,8 @@ return {
         'stylua',     -- Lua formatter
         'prettier',   -- JS/TS/JSON/Markdown formatter
         'prettierd',  -- prettier daemon (faster)
+        'goimports',  -- Go imports + gofmt
+        'gofumpt',    -- stricter gofmt
       })
       require('mason-tool-installer').setup({ ensure_installed = ensure_installed })
 

@@ -115,7 +115,7 @@ return {
       notify_on_error = false,
       format_on_save = function(bufnr)
         local enabled = {
-          python = true, rust = true,
+          python = true, rust = true, go = true,
           javascript = true, javascriptreact = true,
           typescript = true, typescriptreact = true,
           json = true, jsonc = true, yaml = true,
@@ -130,6 +130,7 @@ return {
       formatters_by_ft = {
         python = { 'ruff_format', 'ruff_organize_imports' },
         rust   = { 'rustfmt' },
+        go     = { 'goimports', 'gofumpt' },
         lua    = { 'stylua' },
         javascript     = { 'prettierd', 'prettier', stop_after_first = true },
         javascriptreact = { 'prettierd', 'prettier', stop_after_first = true },

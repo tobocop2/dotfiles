@@ -15,6 +15,7 @@ return {
         'toml', 'vim', 'vimdoc', 'yaml',
         'python',
         'rust',
+        'go', 'gomod', 'gosum', 'gowork',
         'javascript', 'typescript', 'tsx',
         'json', 'jsonc',
       },
