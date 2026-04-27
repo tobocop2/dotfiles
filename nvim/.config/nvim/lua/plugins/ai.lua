@@ -21,18 +21,20 @@ return {
     },
     opts = {
       adapters = {
-        anthropic = function()
-          return require('codecompanion.adapters').extend('anthropic', {
-            env = {
-              api_key = "cmd:sh -c 'security find-generic-password -ws anthropic_api_key 2>/dev/null || pass anthropic/api_key'",
-            },
-            schema = {
-              model = { default = 'claude-sonnet-4-6' },
-            },
-          })
-        end,
+        http = {
+          anthropic = function()
+            return require('codecompanion.adapters').extend('anthropic', {
+              env = {
+                api_key = "cmd:sh -c 'security find-generic-password -ws anthropic_api_key 2>/dev/null || pass anthropic/api_key'",
+              },
+              schema = {
+                model = { default = 'claude-sonnet-4-6' },
+              },
+            })
+          end,
+        },
       },
-      strategies = {
+      interactions = {
         chat = { adapter = 'anthropic' },
         inline = { adapter = 'anthropic' },
       },
