@@ -11,8 +11,12 @@ return {
     opts = {
       ensure_installed = {
         'bash', 'c', 'diff', 'html', 'lua', 'luadoc',
-        'markdown', 'markdown_inline', 'python', 'query',
+        'markdown', 'markdown_inline', 'query',
         'toml', 'vim', 'vimdoc', 'yaml',
+        'python',
+        'rust',
+        'javascript', 'typescript', 'tsx',
+        'json', 'jsonc',
       },
       auto_install = true,
       highlight = {

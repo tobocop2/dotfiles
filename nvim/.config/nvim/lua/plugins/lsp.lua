@@ -54,15 +54,36 @@ return {
         lua_ls = {
           settings = { Lua = { format = { enable = false } } },
         },
-        -- Add language servers here. Mason will install them on launch.
-        -- pyright = {},
-        -- ts_ls = {},
-        -- rust_analyzer = {},
+        pyright = {
+          settings = {
+            python = {
+              analysis = {
+                typeCheckingMode = 'basic',
+                autoSearchPaths = true,
+                useLibraryCodeForTypes = true,
+                diagnosticMode = 'openFilesOnly',
+              },
+            },
+          },
+        },
+        ruff = {},
+        rust_analyzer = {
+          settings = {
+            ['rust-analyzer'] = {
+              cargo = { allFeatures = true },
+              checkOnSave = { command = 'clippy' },
+            },
+          },
+        },
+        ts_ls = {},
+        eslint = {},
       }
 
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
-        'stylua', -- format Lua code
+        'stylua',     -- Lua formatter
+        'prettier',   -- JS/TS/JSON/Markdown formatter
+        'prettierd',  -- prettier daemon (faster)
       })
       require('mason-tool-installer').setup({ ensure_installed = ensure_installed })
 

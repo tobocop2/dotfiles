@@ -103,19 +103,43 @@ return {
     end,
   },
 
-  -- Format-on-save when explicitly enabled per filetype
+  -- Format-on-save for Python, Rust, TS/JS/JSON/Markdown.
   {
     'stevearc/conform.nvim',
     event = { 'BufWritePre' },
     cmd = { 'ConformInfo' },
     keys = {
-      { '<leader>f', function() require('conform').format({ async = true }) end, mode = '', desc = 'format buffer' },
+      { '<leader>f', function() require('conform').format({ async = true, lsp_format = 'fallback' }) end, mode = '', desc = 'format buffer' },
     },
     opts = {
       notify_on_error = false,
-      format_on_save = function(_) return nil end,
+      format_on_save = function(bufnr)
+        local enabled = {
+          python = true, rust = true,
+          javascript = true, javascriptreact = true,
+          typescript = true, typescriptreact = true,
+          json = true, jsonc = true, yaml = true,
+          markdown = true,
+          lua = true,
+        }
+        if enabled[vim.bo[bufnr].filetype] then
+          return { timeout_ms = 1000, lsp_format = 'fallback' }
+        end
+      end,
       default_format_opts = { lsp_format = 'fallback' },
-      formatters_by_ft = {},
+      formatters_by_ft = {
+        python = { 'ruff_format', 'ruff_organize_imports' },
+        rust   = { 'rustfmt' },
+        lua    = { 'stylua' },
+        javascript     = { 'prettierd', 'prettier', stop_after_first = true },
+        javascriptreact = { 'prettierd', 'prettier', stop_after_first = true },
+        typescript     = { 'prettierd', 'prettier', stop_after_first = true },
+        typescriptreact = { 'prettierd', 'prettier', stop_after_first = true },
+        json = { 'prettierd', 'prettier', stop_after_first = true },
+        jsonc = { 'prettierd', 'prettier', stop_after_first = true },
+        yaml = { 'prettierd', 'prettier', stop_after_first = true },
+        markdown = { 'prettierd', 'prettier', stop_after_first = true },
+      },
     },
   },
 }
