@@ -60,8 +60,11 @@ pass insert anthropic/api_key
 For local models:
 
 ```sh
-ollama pull qwen3-coder:30b
+ollama pull qwen3-coder
 ```
+
+To switch models inside a chat, edit the `model` field in the chat header. List
+installed Ollama models with `curl localhost:11434/api/tags`.
 
 Keymaps inside nvim:
 

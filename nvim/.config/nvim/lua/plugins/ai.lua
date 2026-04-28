@@ -2,7 +2,7 @@
 --
 -- Two adapters available:
 --   - anthropic (default) — talks to api.anthropic.com, claude-sonnet-4-6
---   - ollama             — talks to local Ollama, default qwen3-coder:30b
+--   - ollama             — talks to local Ollama, default qwen3-coder:latest
 --
 -- Anthropic API key resolves from macOS Keychain first, then pass:
 --   security add-generic-password -a "$USER" -s anthropic_api_key -U -w "<key>"
@@ -10,8 +10,10 @@
 -- No plaintext key in shell rc files.
 --
 -- Ollama needs no key. Pull a coder model once:
---   ollama pull qwen3-coder:30b
+--   ollama pull qwen3-coder
 -- Then `,ao` opens a chat against ollama instead of Anthropic.
+-- To pick a different model in-chat: type `:` then change the `model` field
+-- in the chat header, or list installed models with `curl localhost:11434/api/tags`.
 
 return {
   {
@@ -49,7 +51,7 @@ return {
                 end,
               },
               schema = {
-                model = { default = 'qwen3-coder:30b' },
+                model = { default = 'qwen3-coder:latest' },
                 num_ctx = { default = 32768 },
               },
             })
