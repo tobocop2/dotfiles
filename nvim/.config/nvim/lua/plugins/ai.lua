@@ -33,6 +33,12 @@ return {
     opts = {
       adapters = {
         http = {
+          opts = {
+            -- `ga` inside a chat buffer opens a vim.ui.select with all
+            -- adapters, then all models for that adapter. Ollama populates
+            -- its model list by hitting /api/tags on the running server.
+            show_model_choices = true,
+          },
           anthropic = function()
             return require('codecompanion.adapters').extend('anthropic', {
               env = {
