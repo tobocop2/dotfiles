@@ -133,7 +133,7 @@ export KEYTIMEOUT=1
 # fi
 
 # Compilation flags
-# export ARCHFLAGS="-arch x86_64"
+# export 
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
@@ -313,4 +313,26 @@ source /Users/tobias/projects/luminopia-github/developer-tools/db-utils.bash
 export DOCKER_DEFAULT_PLATFORM=linux/amd64
 
 unalias yt
-export PATH="/opt/homebrew/opt/postgresql@16/bin:$PATH"
+export PATH="/opt/homebrew/opt/postgresql@16/bin:$HOME/.local/bin:$PATH"
+
+
+alias claude-mem='bun "/Users/tobias/.claude/plugins/marketplaces/thedotmack/plugin/scripts/worker-service.cjs"'
+
+fpath+=~/.zfunc; autoload -Uz compinit; compinit
+
+
+  killdocker() {
+    pkill -9 -f "Docker Desktop" 2>/dev/null
+    pkill -9 -f "com.docker" 2>/dev/null
+  }
+export TFENV_ARCH=arm64
+
+# Added by LM Studio CLI tool (lms)
+export PATH="$PATH:/Users/tobias/.lmstudio/bin"
+
+# direnv: per-directory env vars (e.g. CLAUDE_CONFIG_DIR for per-folder Claude accounts)
+eval "$(direnv hook zsh)"
+
+# lilbee IRC service helpers (private host lives in ~/.zshenv.local, NOT committed)
+[[ -f ~/.zshenv.local ]] && source ~/.zshenv.local
+source ~/projects/dotfiles/irc/lilbee.zsh
