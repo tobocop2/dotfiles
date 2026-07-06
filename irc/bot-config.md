@@ -26,9 +26,14 @@ config plugins.RSS.waitPeriod 300
 flush
 ```
 
-## Greeting new people (Herald)
+## Greeting (Herald) — default herald OFF
+Auto-greeting everyone on every join is spammy (Herald has no "first-timers only" mode; it
+re-greets on each join past a short throttle). So the default herald is REMOVED. The plugin
+stays loaded for optional *personal* heralds of specific regulars.
 ```
-herald default #lilbee Welcome to #lilbee, a local search engine you can talk to that runs on your own machine. Docs and install: https://lilbee.sh
+herald default #lilbee --remove          # no auto-greeting for everyone
+# optional, per regular you actually want greeted:
+herald add <nick-or-account> Welcome back!
 flush
 ```
 
